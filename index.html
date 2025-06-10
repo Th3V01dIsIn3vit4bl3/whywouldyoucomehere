@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>they killed so many...</title>
+  <style>
+    body {
+      background-color: black;
+      color: red;
+      font-family: "Courier New", monospace;
+      padding: 2rem;
+      white-space: pre;
+      animation: glitch 2s infinite;
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    @keyframes glitch {
+      0%, 100% { text-shadow: 2px 0 red, -2px 0 blue; }
+      50% { text-shadow: -2px 0 red, 2px 0 blue; }
+    }
+
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+
+    button {
+      background: transparent;
+      color: red;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      cursor: pointer;
+      font-family: monospace;
+      font-size: 1rem;
+      position: fixed;
+      bottom: 0vh;
+      left: 95%;
+      transform: translateX;
+      /* Removed smooth transition */
+    }
+  </style>
+</head>
+<body>
+  <button id="toggleBtn" onclick="togglePage()">?</button>
+
+  <div id="log1" class="page active">
+    Message:<br />
+    We have seen what you are doing, and we're impressed.
+    You may even be qualified, suggesting your... current job position.
+    We cannot disclose here.
+  </div>
+
+  <div id="log2" class="page">
+    Hint:<br />
+    Hey, you found it.<br />
+    Let us know you really are here.<br />
+    You can notify us at []<br /><br />
+    See you sometime later.
+  </div>
+
+  <script>
+    let current = 1;
+    const btn = document.getElementById('toggleBtn');
+
+    function togglePage() {
+      if (current === 1) {
+        document.getElementById('log1').classList.remove('active');
+        document.getElementById('log2').classList.add('active');
+        startGlitchFlicker(btn);
+        current = 2;
+      }
+    }
+
+    function startGlitchFlicker(button) {
+      let count = 0;
+      const maxFlicks = 20;
+      const distance = 3;
+
+      const flickerInterval = setInterval(() => {
+        // Random direction every flick
+        const dx = (Math.random() < 0.5 ? -5 : 5) * Math.floor(Math.random() * distance);
+        const dy = (Math.random() < 0.5 ? -5 : 5) * Math.floor(Math.random() * distance);
+
+        button.style.opacity = (count % 2 === 0) ? '0' : '1';
+        button.style.transform = `translate(${dx}px, ${dy}px)`;
+
+        count++;
+        if (count > maxFlicks) {
+          clearInterval(flickerInterval);
+          button.style.display = 'none';
+        }
+      }, 5);
+    }
+
+    const chars = ['?', '!', '#', '*', '%', '$', '☠', '۞', '☏', '⇨', '♧', '☻', '☹', '♰', '∞', '⊗', '♪', '¢', '☝', '', ''];
+    setInterval(() => {
+      btn.textContent = chars[Math.floor(Math.random() * chars.length)];
+    }, 50); // 50ms = chaotic but readable
+  </script>
+</body>
+</html>
